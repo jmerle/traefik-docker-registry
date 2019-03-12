@@ -1,0 +1,33 @@
+version: '3.5'
+services:
+  registry:
+    image: registry:2
+    environment:
+      - REGISTRY_AUTH=htpasswd
+      - REGISTRY_AUTH_HTPASSWD_REALM=Registry Realm
+      - REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd
+      - REGISTRY_STORAGE_DELETE_ENABLED=true
+    networks:
+      - traefik
+    volumes:
+      - ./htpasswd:/auth/htpasswd
+      - registry:/var/lib/registry
+    restart: unless-stopped
+  frontend:
+    image: joxit/docker-registry-ui:static
+    environment:
+      - REGISTRY_URL=http://registry:5000
+      - REGISTRY_TITLE=${DOMAIN}
+      - DELETE_IMAGES=true
+    networks:
+      - traefik
+    labels:
+      traefik.enable: true
+      traefik.frontend.rule: "Host:${DOMAIN}"
+    restart: unless-stopped
+volumes:
+  registry:
+networks:
+  traefik:
+    name: ${TRAEFIK_NETWORK}
+    external: true
