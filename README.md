@@ -1,4 +1,4 @@
-# Docker Compose Jenkins
+# Traefik Docker Registry
 
 A Docker Compose configuration to run a private [Docker registry](https://docs.docker.com/registry/) secured with basic authentication and [Joxit/docker-registry-ui](https://github.com/Joxit/docker-registry-ui) behind a [Traefik](https://traefik.io/) reverse proxy.
 
